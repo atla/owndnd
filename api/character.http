@@ -1,0 +1,20 @@
+GET http://localhost:8010/api/charactersheets
+
+###
+
+GET http://localhost:8010/api/charactersheets/001
+
+###
+
+POST http://localhost:8010/api/charactersheets  HTTP/1.1
+content-type: application/json
+
+ {
+    "name": "atla",
+    "description": "a real hero",
+    "race": "human",
+    "currentHitPoints": 10,
+    "maxHitPoints": 20,
+    "armorClass": 13,
+    "personalityTraits": "a really great guy"
+  },
