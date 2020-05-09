@@ -4,26 +4,17 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HasID ...
-type HasID interface {
-	SetID(id primitive.ObjectID)
-	GetID() primitive.ObjectID
-}
-
 // EntityID ...
-type EntityID primitive.ObjectID
+type EntityID string
+
+// NewEntity creates a new base entity
+func NewEntity() *Entity {
+	return &Entity{
+		ID: EntityID(primitive.NewObjectID().Hex()),
+	}
+}
 
 //Entity ...
 type Entity struct {
 	ID EntityID `bson:"_id,omitempty" json:"id,omitempty"`
-}
-
-// SetID ...
-func (e *Entity) SetID(id EntityID) {
-	e.ID = id
-}
-
-// GetID ...
-func (e *Entity) GetID() EntityID {
-	return e.ID
 }

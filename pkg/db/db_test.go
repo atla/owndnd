@@ -1,7 +1,8 @@
 package db
 
 import "testing"
-func TestNew(t *testing.T){
+
+func TestNew(t *testing.T) {
 	db := New()
 
 	if db == nil {

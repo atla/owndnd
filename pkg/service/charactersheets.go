@@ -37,6 +37,8 @@ func (s *characterSheetsService) GetCharacterSheetByID(id string) (*e.CharacterS
 
 func (s *characterSheetsService) CreateCharacterSheet(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error) {
 
+	characterSheet.Entity = e.NewEntity()
+
 	return s.repo.Store(characterSheet)
 
 }

@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/atla/owndnd/pkg/db"
 	"github.com/atla/owndnd/pkg/entities"
@@ -82,13 +81,6 @@ func (repo *GenericRepo) FindAll(collector elementCollector) error {
 // Store stores a new entity
 func (repo *GenericRepo) Store(entity interface{}) (interface{}, error) {
 
-	// update creation time
-	//item.Created = time.Now()
-
-	entity.(e.Entity).ID = primitive.NewObjectID()
-
-	fmt.Println("ID: " + entity.(e.Entity).ID)
-
 	if result, error := repo.db.InsertOne(repo.collection, entity); error != nil {
 		log.WithField("Error", error).Error("error during insertion")
 		return nil, error
@@ -96,23 +88,26 @@ func (repo *GenericRepo) Store(entity interface{}) (interface{}, error) {
 		if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
 
 			if n, ok := entity.(*entities.Entity); ok {
-				n.ID = entities.EntityID(oid)
+				n.ID = entities.EntityID(oid.Hex())
 			}
 		}
 	}
 
 	return entity, nil
-
 }
 
 // Update an existing entity
 func (repo *GenericRepo) Update(item interface{}, id e.EntityID) error {
 
-	if result, error := repo.db.UpdateOneByID(repo.collection, primitive.ObjectID(id), item); error != nil {
-		log.WithField("Error", error).Error("error during insertion")
-		return error
+	if objid, err := primitive.ObjectIDFromHex(string(id)); err == nil {
+		if result, err := repo.db.UpdateOneByID(repo.collection, objid, item); err != nil {
+			log.WithError(err).Error("Error during update")
+			return err
+		} else {
+			log.WithField("Generic Update", result).Info("updated entity")
+		}
 	} else {
-		log.WithField("Generic Update", result).Info("updated entity")
+		log.WithError(err).Error("Error during update")
 	}
 
 	return nil

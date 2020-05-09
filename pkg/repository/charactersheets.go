@@ -37,7 +37,10 @@ func NewMongoDBCharacterSheetRepository(db *db.Client) CharacterSheetsRepository
 
 func (ir *characterSheetRepository) FindByID(id string) (*e.CharacterSheet, error) {
 	result, err := ir.GenericRepo.FindByID(id)
-	return result.(*e.CharacterSheet), err
+	if err == nil {
+		return result.(*e.CharacterSheet), nil
+	}
+	return nil, err
 }
 
 func (ir *characterSheetRepository) FindByName(name string) ([]*e.CharacterSheet, error) {
