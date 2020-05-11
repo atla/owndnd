@@ -6,7 +6,8 @@ GET http://localhost:8010/api/charactersheets/5eb6a351047fe579956c09b8
 
 ###
 
-POST http://localhost:8010/api/charactersheets  HTTP/1.1
+###POST http://localhost:8010/api/charactersheets  HTTP/1.1
+POST https://talesofapirate.com/dnd/api/charactersheets  HTTP/1.1
 content-type: application/json
 
  {
