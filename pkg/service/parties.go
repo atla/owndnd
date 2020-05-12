@@ -41,6 +41,7 @@ func (s *partiesService) UpdateParty(id string, party *e.Party) error {
 func (s *partiesService) CreateParty(createParty *CreatePartyDTO) (*e.Party, error) {
 
 	var party entities.Party
+	party.Name = createParty.Name
 
 	for _, c := range createParty.Characters {
 		party.Characters = append(party.Characters, entities.EntityID(c))

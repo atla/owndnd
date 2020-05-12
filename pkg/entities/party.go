@@ -19,7 +19,7 @@ func (cr CharacterRace) String() string {
 
 //Party data
 type Party struct {
-	Entity
+	*Entity
 	Name string `json:"name"`
 
 	Created    time.Time  `bson:"created,omitempty" json:"created,omitempty"`
