@@ -23,6 +23,7 @@ func NewPartysService(characterSheetsRepo r.CharacterSheetsRepository) PartysSer
 }
 
 func (s *partysService) GetPartyByID(id string) (*e.Party, error) {
+	// change for push
 	return nil, nil
 }
 
