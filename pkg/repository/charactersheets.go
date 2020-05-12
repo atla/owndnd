@@ -14,6 +14,7 @@ type CharacterSheetsRepository interface {
 	FindByName(name string) ([]*e.CharacterSheet, error)
 	Store(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error)
 	Update(characterSheet *e.CharacterSheet) error
+	Delete(id e.EntityID) error
 }
 
 //--- Implementations
@@ -68,6 +69,10 @@ func (ir *characterSheetRepository) FindAll() ([]*e.CharacterSheet, error) {
 
 func (ir *characterSheetRepository) Update(charachterSheet *e.CharacterSheet) error {
 	return ir.GenericRepo.Update(charachterSheet, charachterSheet.ID)
+}
+
+func (ir *characterSheetRepository) Delete(id e.EntityID) error {
+	return ir.GenericRepo.Delete(id)
 }
 
 func (ir *characterSheetRepository) Store(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error) {

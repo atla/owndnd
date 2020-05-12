@@ -96,6 +96,19 @@ func (repo *GenericRepo) Store(entity interface{}) (interface{}, error) {
 	return entity, nil
 }
 
+// Delete an existing entity
+func (repo *GenericRepo) Delete(id e.EntityID) error {
+
+	if result, err := repo.db.DeleteByID(repo.collection, string(id)); err != nil {
+		log.WithError(err).Error("Error during update")
+		return err
+	} else {
+		log.WithField("Generic Update", result).Info("updated entity")
+	}
+
+	return nil
+}
+
 // Update an existing entity
 func (repo *GenericRepo) Update(item interface{}, id e.EntityID) error {
 

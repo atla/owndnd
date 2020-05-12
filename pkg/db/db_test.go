@@ -3,7 +3,7 @@ package db
 import "testing"
 
 func TestNew(t *testing.T) {
-	db := New()
+	db := New("test")
 
 	if db == nil {
 		t.Error("db object is nil")

@@ -1,4 +1,6 @@
-GET http://localhost:8010/api/charactersheets
+#GET http://localhost:8010/api/charactersheets
+GET https://talesofapirate.com/dnd/api/charactersheets
+#POST https://talesofapirate.com/dnd/api/charactersheets  HTTP/1.1
 
 ###
 
@@ -11,11 +13,11 @@ POST https://talesofapirate.com/dnd/api/charactersheets  HTTP/1.1
 content-type: application/json
 
  {
-    "name": "Another one",
+    "name": "Elissa",
     "description": "i am sure of it",
-    "race": "human",
+    "race": "dwarf",
     "currentHitPoints": 15,
     "maxHitPoints": 18,
     "armorClass": 12,
-    "personalityTraits": "demigod"
+    "personalityTraits": "drinking beer like no other girl"
   },

@@ -12,6 +12,7 @@ type CharacterSheetsService interface {
 	GetCharacterSheets() ([]*e.CharacterSheet, error)
 	GetCharacterSheetByID(id string) (*e.CharacterSheet, error)
 	CreateCharacterSheet(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error)
+	DeleteCharacterSheetByID(id e.EntityID) error
 }
 
 //--- Implementations
@@ -29,6 +30,10 @@ func NewCharacterSheetsService(characterSheetsRepo r.CharacterSheetsRepository) 
 
 func (s *characterSheetsService) GetCharacterSheets() ([]*e.CharacterSheet, error) {
 	return s.repo.FindAll()
+}
+
+func (s *characterSheetsService) DeleteCharacterSheetByID(id e.EntityID) error {
+	return s.repo.Delete(id)
 }
 
 func (s *characterSheetsService) GetCharacterSheetByID(id string) (*e.CharacterSheet, error) {
