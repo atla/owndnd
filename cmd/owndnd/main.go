@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
+
+	log "github.com/sirupsen/logrus"
+
 	"os"
 
 	"github.com/atla/owndnd/pkg/server"
