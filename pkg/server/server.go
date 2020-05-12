@@ -45,7 +45,7 @@ func NewApp() App {
 func (app *app) setupRoutes() {
 
 	characterSheetHandler := NewCharacterSheetHandler(app.facade.CharacterSheetsService(), app)
-	partiesHandler := NewPartiesHandler(app.facade.CharacterSheetsService(), app)
+	partiesHandler := NewPartiesHandler(app.facade.PartiesService(), app)
 
 	app.routes = Routes{
 		//charactersheets
@@ -53,7 +53,10 @@ func (app *app) setupRoutes() {
 		Route{"/api/charactersheets/{id}", "GET", "Get a charactersheet by id", characterSheetHandler.GetCharacterSheetByID},
 		Route{"/api/charactersheets", "POST", "Create a new charactersheet", characterSheetHandler.PostCharacterSheet},
 
+		// parties
 		Route{"/api/parties", "POST", "Create a new party", partiesHandler.CreateParty},
+		Route{"/api/parties/{id}", "PUT", "Update a party", partiesHandler.UpdateParty},
+		Route{"/api/parties/{id}", "DELETE", "Delete a party", partiesHandler.DeleteParty},
 	}
 
 	// wrap all routes in logger

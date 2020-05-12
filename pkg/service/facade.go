@@ -8,12 +8,12 @@ import (
 //Facade ...
 type Facade interface {
 	CharacterSheetsService() CharacterSheetsService
-	//	PartysService() PartysService
+	PartiesService() PartiesService
 }
 
 type facade struct {
 	css CharacterSheetsService
-	//ps  PartysService
+	ps  PartiesService
 
 	db *db.Client
 }
@@ -22,12 +22,18 @@ type facade struct {
 func NewFacade(db *db.Client) Facade {
 
 	characterSheetRepo := repository.NewMongoDBCharacterSheetRepository(db)
+	partiesRepo := repository.NewMongoDBPartiesRepository(db)
 
 	return &facade{
 		css: NewCharacterSheetsService(characterSheetRepo),
+		ps:  NewPartiesService(partiesRepo),
 	}
 }
 
 func (f *facade) CharacterSheetsService() CharacterSheetsService {
 	return f.css
+}
+
+func (f *facade) PartiesService() PartiesService {
+	return f.ps
 }

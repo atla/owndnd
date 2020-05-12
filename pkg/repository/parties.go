@@ -5,13 +5,14 @@ import (
 	e "github.com/atla/owndnd/pkg/entities"
 )
 
-//PartysRepository repository interface
+//PartiesRepository repository interface
 type PartiesRepository interface {
 	//FindAll() ([]*e.Party, error)
-	//	FindByID(id string) (*e.Party, error)
+	FindByID(id string) (*e.Party, error)
 	//FindByName(name string) (*e.Party, error)
 	Store(party *e.Party) (*e.Party, error)
-	//Update(party *e.Party) error
+	Update(id string, party *e.Party) error
+	Delete(id string) error
 }
 
 //--- Implementations
@@ -36,4 +37,18 @@ func NewMongoDBPartiesRepository(db *db.Client) PartiesRepository {
 func (pr *partiesRepo) Store(party *e.Party) (*e.Party, error) {
 	result, err := pr.GenericRepo.Store(party)
 	return result.(*e.Party), err
+
+}
+
+func (pr *partiesRepo) FindByID(id string) (*e.Party, error) {
+	result, err := pr.GenericRepo.FindByID(id)
+	return result.(*e.Party), err
+}
+
+func (pr *partiesRepo) Update(id string, party *e.Party) error {
+	return pr.GenericRepo.Update(party, e.EntityID(id))
+}
+
+func (pr *partiesRepo) Delete(id string) error {
+	return pr.GenericRepo.Delete(e.EntityID(id))
 }
