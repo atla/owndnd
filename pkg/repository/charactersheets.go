@@ -13,8 +13,8 @@ type CharacterSheetsRepository interface {
 	FindByID(id string) (*e.CharacterSheet, error)
 	FindByName(name string) ([]*e.CharacterSheet, error)
 	Store(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error)
-	Update(characterSheet *e.CharacterSheet) error
-	Delete(id e.EntityID) error
+	Update(id string, characterSheet *e.CharacterSheet) error
+	Delete(id string) error
 }
 
 //--- Implementations
@@ -45,7 +45,7 @@ func (ir *characterSheetRepository) FindByID(id string) (*e.CharacterSheet, erro
 }
 
 func (ir *characterSheetRepository) FindByName(name string) ([]*e.CharacterSheet, error) {
-	var results []*e.CharacterSheet
+	results := make([]*e.CharacterSheet, 0)
 
 	if err := ir.GenericRepo.FindAllWithParam(
 		db.NewQueryParams(db.QueryParam{Key: "name", Value: name}),
@@ -58,7 +58,7 @@ func (ir *characterSheetRepository) FindByName(name string) ([]*e.CharacterSheet
 }
 
 func (ir *characterSheetRepository) FindAll() ([]*e.CharacterSheet, error) {
-	var results []*e.CharacterSheet
+	results := make([]*e.CharacterSheet, 0)
 	if err := ir.GenericRepo.FindAll(func(elem interface{}) {
 		results = append(results, elem.(*e.CharacterSheet))
 	}); err != nil {
@@ -67,15 +67,18 @@ func (ir *characterSheetRepository) FindAll() ([]*e.CharacterSheet, error) {
 	return results, nil
 }
 
-func (ir *characterSheetRepository) Update(charachterSheet *e.CharacterSheet) error {
-	return ir.GenericRepo.Update(charachterSheet, charachterSheet.ID)
+func (ir *characterSheetRepository) Update(id string, charachterSheet *e.CharacterSheet) error {
+	return ir.GenericRepo.Update(charachterSheet, id)
 }
 
-func (ir *characterSheetRepository) Delete(id e.EntityID) error {
+func (ir *characterSheetRepository) Delete(id string) error {
 	return ir.GenericRepo.Delete(id)
 }
 
 func (ir *characterSheetRepository) Store(characterSheet *e.CharacterSheet) (*e.CharacterSheet, error) {
+
+	characterSheet.Entity = e.NewEntity()
+
 	result, err := ir.GenericRepo.Store(characterSheet)
 	return result.(*e.CharacterSheet), err
 }

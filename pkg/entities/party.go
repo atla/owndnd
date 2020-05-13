@@ -2,6 +2,8 @@ package entities
 
 import (
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //CharacterRace type
@@ -19,9 +21,8 @@ func (cr CharacterRace) String() string {
 
 //Party data
 type Party struct {
-	*Entity
-	Name string `json:"name"`
-
-	Created    time.Time  `bson:"created,omitempty" json:"created,omitempty"`
-	Characters []EntityID `bson:"characters,omitempty" json:"characters,omitempty"`
+	*Entity    `bson:",inline"`
+	Name       string               `json:"name"`
+	Created    time.Time            `bson:"created,omitempty" json:"created,omitempty"`
+	Characters []primitive.ObjectID `bson:"characters,omitempty" json:"characters,omitempty"`
 }

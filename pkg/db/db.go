@@ -122,15 +122,14 @@ func (dba *Client) FindOne(coll string, key string, value string) *mongo.SingleR
 }
 
 //FindByID returns all entities of a given collection
-func (dba *Client) FindByID(coll string, id string) *mongo.SingleResult {
-	objID, _ := primitive.ObjectIDFromHex(id)
-	return dba.C(coll).FindOne(context.TODO(), bson.D{{"_id", objID}})
+func (dba *Client) FindByID(coll string, id primitive.ObjectID) *mongo.SingleResult {
+	return dba.C(coll).FindOne(context.TODO(), bson.M{"_id": id})
 }
 
 //DeleteByID returns all entities of a given collection
-func (dba *Client) DeleteByID(coll string, id string) (*mongo.DeleteResult, error) {
-	objID, _ := primitive.ObjectIDFromHex(id)
-	return dba.C(coll).DeleteOne(context.TODO(), bson.D{{"_id", objID}})
+func (dba *Client) DeleteByID(coll string, id primitive.ObjectID) (*mongo.DeleteResult, error) {
+
+	return dba.C(coll).DeleteOne(context.TODO(), bson.M{"_id": id})
 }
 
 //InsertOne inserts one document

@@ -44,19 +44,29 @@ func NewApp() App {
 // SetupRoutes ... Configures the routes
 func (app *app) setupRoutes() {
 
-	characterSheetHandler := NewCharacterSheetHandler(app.facade.CharacterSheetsService(), app)
-	partiesHandler := NewPartiesHandler(app.facade.PartiesService(), app)
+	var statusHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("API is up and running"))
+	})
+
+	csh := NewCharacterSheetHandler(app.facade.CharacterSheetsService(), app)
+	ph := NewPartiesHandler(app.facade.PartiesService(), app)
 
 	app.routes = Routes{
 		//charactersheets
-		Route{"/api/charactersheets", "GET", "Get all charactersheets", characterSheetHandler.GetCharacterSheets},
-		Route{"/api/charactersheets/{id}", "GET", "Get a charactersheet by id", characterSheetHandler.GetCharacterSheetByID},
-		Route{"/api/charactersheets", "POST", "Create a new charactersheet", characterSheetHandler.PostCharacterSheet},
+		Route{"/api/charactersheets", "GET", "Get all charactersheets", csh.GetCharacterSheets},
+		Route{"/api/charactersheets/{id}", "GET", "Get a charactersheet by id", csh.GetCharacterSheetByID},
+		Route{"/api/charactersheets/{id}", "DELETE", "Delete charactersheet by id", csh.DeleteCharacterSheetByID},
+		Route{"/api/charactersheets/{id}", "PUT", "Update charactersheet by id", csh.UpdateCharacterSheetByID},
+		Route{"/api/charactersheets", "POST", "Create a new charactersheet", csh.PostCharacterSheet},
 
 		// parties
-		Route{"/api/parties", "POST", "Create a new party", partiesHandler.CreateParty},
-		Route{"/api/parties/{id}", "PUT", "Update a party", partiesHandler.UpdateParty},
-		Route{"/api/parties/{id}", "DELETE", "Delete a party", partiesHandler.DeleteParty},
+		Route{"/api/parties", "POST", "Create a new party", ph.CreateParty},
+		Route{"/api/parties", "GET", "Get parties", ph.GetParties},
+		Route{"/api/parties/{id}", "GET", "Get party by ID", ph.GetPartyByID},
+		Route{"/api/parties/{id}", "PUT", "Update a party", ph.UpdateParty},
+		Route{"/api/parties/{id}", "DELETE", "Delete a party", ph.DeleteParty},
+
+		Route{"/health", "GET", "health check", statusHandler},
 	}
 
 	// wrap all routes in logger

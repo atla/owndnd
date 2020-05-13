@@ -38,7 +38,7 @@ type Attribute struct {
 
 //CharacterSheet data
 type CharacterSheet struct {
-	*Entity
+	*Entity     `bson:",inline"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Race        Race   `json:"race"`
@@ -52,4 +52,14 @@ type CharacterSheet struct {
 	Attributes []*Attribute `bson:"attributes" json:"attributes,omitempty"`
 
 	PersonalityTraits string `json:"personalityTraits,omitempty"`
+}
+
+// AsCharacter creates a new character from charactersheet
+func (cs *CharacterSheet) AsCharacter() *Character {
+	return &Character{
+
+		Name:        cs.Name,
+		Description: cs.Description,
+		Race:        cs.Race,
+	}
 }

@@ -30,7 +30,7 @@ func NewItemTemplatesHandler(its service.ItemTemplatesService, httpResponder HTT
 func (ih *itemTemplateHandler) GetItemTemplates(w http.ResponseWriter, r *http.Request) {
 	//TODO: check if there is a search/filter
 	if items, err := ih.itemTemplatesService.GetItemTemplatesRepository().FindAll(); err != nil {
-		ih.httpResponder.ERROR(w, http.StatusNotFound)
+		ih.httpResponder.ERROR(w, http.StatusNotFound, err)
 	} else {
 		ih.httpResponder.JSON(w, http.StatusOK, items)
 	}
@@ -42,7 +42,7 @@ func (ih *itemTemplateHandler) GetItemTemplateByTemplateID(w http.ResponseWriter
 	var templateID = params["templateID"]
 
 	if itemTemplate, err := ih.itemTemplatesService.GetItemTemplatesRepository().FindByTemplateID(templateID); err != nil {
-		ih.httpResponder.ERROR(w, http.StatusNotFound)
+		ih.httpResponder.ERROR(w, http.StatusNotFound, err)
 	} else {
 		ih.httpResponder.JSON(w, http.StatusOK, itemTemplate)
 	}

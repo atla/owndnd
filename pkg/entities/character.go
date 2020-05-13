@@ -13,15 +13,3 @@ type Character struct {
 func NewCharacter() *Character {
 	return &Character{}
 }
-
-// NewCharacterFrom creates a new character from charactersheet
-func NewCharacterFrom(characterSheet *CharacterSheet) *Character {
-	return &Character{
-		Entity: &Entity{
-			ID: characterSheet.ID,
-		},
-		Name:        characterSheet.Name,
-		Description: characterSheet.Description,
-		Race:        characterSheet.Race,
-	}
-}

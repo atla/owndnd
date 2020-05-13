@@ -1,0 +1,37 @@
+
+@production=https://talesofapirate.com/dnd
+@local=http://localhost:8010
+@host={{local}}
+
+GET {{host}}/api/charactersheets
+###
+GET {{host}}/api/charactersheets/5ebc644452c2d8dee51ffcf3
+###
+DELETE {{host}}/api/charactersheets/5ebba10d491d61c07e299222
+###
+POST {{host}}/api/charactersheets  HTTP/1.1
+content-type: application/json
+
+ {
+    "name": "Erebor",
+    "description": "i am sure of it",
+    "race": "dwarf",
+    "currentHitPoints": 15,
+    "maxHitPoints": 2,
+    "armorClass": 3,
+    "personalityTraits": "lalala"
+  },
+
+### ------------------
+
+GET {{host}}/api/parties
+###
+POST {{host}}/api/parties  HTTP/1.1
+content-type: application/json
+
+ {
+    "name": "The allmighty Heroes",
+    "characters": [
+        "5eb9009e2a00469b59fa60e2", "5eb900b22a00469b59fa60e4", "5eb93bfa2a00469b59fa60e6"
+    ]
+}

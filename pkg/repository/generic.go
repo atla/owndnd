@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"github.com/atla/owndnd/pkg/db"
-	"github.com/atla/owndnd/pkg/entities"
 	e "github.com/atla/owndnd/pkg/entities"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,9 +23,13 @@ type elementCollector func(element interface{})
 // FindByID ...
 func (repo *GenericRepo) FindByID(id string) (interface{}, error) {
 
-	result := repo.db.FindByID(repo.collection, id)
+	log.WithField("id", id).Info("FindByID called")
+
+	oid, _ := primitive.ObjectIDFromHex(id)
+	result := repo.db.FindByID(repo.collection, oid)
 
 	if result != nil {
+
 		entity := repo.generator()
 		if err := result.Decode(entity); err != nil {
 			log.WithField("Error", err).Error("Error decoding entity")
@@ -86,9 +89,8 @@ func (repo *GenericRepo) Store(entity interface{}) (interface{}, error) {
 		return nil, error
 	} else {
 		if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
-
-			if n, ok := entity.(*entities.Entity); ok {
-				n.ID = entities.EntityID(oid.Hex())
+			if n, ok := entity.(e.Entity); ok {
+				n.ID = oid
 			}
 		}
 	}
@@ -97,9 +99,11 @@ func (repo *GenericRepo) Store(entity interface{}) (interface{}, error) {
 }
 
 // Delete an existing entity
-func (repo *GenericRepo) Delete(id e.EntityID) error {
+func (repo *GenericRepo) Delete(id string) error {
 
-	if result, err := repo.db.DeleteByID(repo.collection, string(id)); err != nil {
+	oid, _ := primitive.ObjectIDFromHex(id)
+
+	if result, err := repo.db.DeleteByID(repo.collection, oid); err != nil {
 		log.WithError(err).Error("Error during update")
 		return err
 	} else {
@@ -110,17 +114,15 @@ func (repo *GenericRepo) Delete(id e.EntityID) error {
 }
 
 // Update an existing entity
-func (repo *GenericRepo) Update(item interface{}, id e.EntityID) error {
+func (repo *GenericRepo) Update(item interface{}, id string) error {
 
-	if objid, err := primitive.ObjectIDFromHex(string(id)); err == nil {
-		if result, err := repo.db.UpdateOneByID(repo.collection, objid, item); err != nil {
-			log.WithError(err).Error("Error during update")
-			return err
-		} else {
-			log.WithField("Generic Update", result).Info("updated entity")
-		}
-	} else {
+	oid, _ := primitive.ObjectIDFromHex(id)
+
+	if result, err := repo.db.UpdateOneByID(repo.collection, oid, item); err != nil {
 		log.WithError(err).Error("Error during update")
+		return err
+	} else {
+		log.WithField("Generic Update", result).Info("updated entity")
 	}
 
 	return nil

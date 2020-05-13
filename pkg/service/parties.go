@@ -4,11 +4,13 @@ import (
 	"github.com/atla/owndnd/pkg/entities"
 	e "github.com/atla/owndnd/pkg/entities"
 	r "github.com/atla/owndnd/pkg/repository"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //PartiesService delives logical functions on top of the charactersheets Repo
 type PartiesService interface {
 	GetPartyByID(id string) (*e.Party, error)
+	GetParties() ([]*e.Party, error)
 	CreateParty(createParty *CreatePartyDTO) (*e.Party, error)
 	UpdateParty(id string, party *entities.Party) error
 	DeletePartyByID(id string) error
@@ -44,10 +46,16 @@ func (s *partiesService) CreateParty(createParty *CreatePartyDTO) (*e.Party, err
 	party.Name = createParty.Name
 
 	for _, c := range createParty.Characters {
-		party.Characters = append(party.Characters, entities.EntityID(c))
+
+		oid, _ := primitive.ObjectIDFromHex(c)
+		party.Characters = append(party.Characters, oid)
 	}
 
 	return s.repo.Store(&party)
+}
+
+func (s *partiesService) GetParties() ([]*e.Party, error) {
+	return s.repo.FindAll()
 }
 
 func (s *partiesService) AddCharacterToParty(party *e.Party, character *e.Character) error {
