@@ -1,5 +1,5 @@
 package server
-
+/*
 import (
 	"encoding/json"
 	"net/http"
@@ -102,3 +102,6 @@ func (handler *partiesHandler) DeleteParty(w http.ResponseWriter, r *http.Reques
 	}
 
 }
+
+
+*/

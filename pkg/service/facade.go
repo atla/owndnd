@@ -9,24 +9,26 @@ import (
 type Facade interface {
 	CharacterSheetsService() CharacterSheetsService
 	PartiesService() PartiesService
+	UsersService() UsersService
 }
 
 type facade struct {
 	css CharacterSheetsService
 	ps  PartiesService
-
-	db *db.Client
+	us  UsersService
+	db  *db.Client
 }
 
 //NewFacade creates a new service facade
 func NewFacade(db *db.Client) Facade {
-
 	characterSheetRepo := repository.NewMongoDBCharacterSheetRepository(db)
 	partiesRepo := repository.NewMongoDBPartiesRepository(db)
+	usersRepo := repository.NewMongoDBUsersRepository(db)
 
 	return &facade{
 		css: NewCharacterSheetsService(characterSheetRepo),
 		ps:  NewPartiesService(partiesRepo),
+		us:  NewUsersService(usersRepo),
 	}
 }
 
@@ -36,4 +38,7 @@ func (f *facade) CharacterSheetsService() CharacterSheetsService {
 
 func (f *facade) PartiesService() PartiesService {
 	return f.ps
+}
+func (f *facade) UsersService() UsersService {
+	return f.us
 }

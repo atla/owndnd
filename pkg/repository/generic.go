@@ -40,6 +40,37 @@ func (repo *GenericRepo) FindByID(id string) (interface{}, error) {
 	return nil, errors.New("entity not found")
 }
 
+// FindByField ...
+func (repo *GenericRepo) FindByField(key string, value string) (interface{}, error) {
+
+	log.WithField(key, value).Info("FindByField called")
+
+	result := repo.db.FindOne(repo.collection, key, value)
+
+	if result != nil {
+		entity := repo.generator()
+		if err := result.Decode(entity); err != nil {
+			log.WithField("Error", err).Error("Error decoding entity")
+			return nil, errors.New("entity not found")
+		}
+		return entity, nil
+	}
+	return nil, errors.New("entity not found")
+}
+
+// UpdateByField an existing entity
+func (repo *GenericRepo) UpdateByField(item interface{}, key string, value string) error {
+
+	if result, err := repo.db.UpdateOne(repo.collection, key, value, item); err != nil {
+		log.WithError(err).Error("Error during update")
+		return err
+	} else {
+		log.WithField("Generic Update", result).Info("updated entity")
+	}
+
+	return nil
+}
+
 // FindAllWithParam returns all entities
 func (repo *GenericRepo) FindAllWithParam(params *db.QueryParams, collector elementCollector) error {
 

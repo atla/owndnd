@@ -1,19 +1,26 @@
 
-@production=https://talesofapirate.com/dnd
+@prod=https://talesofapirate.com/dnd
 @local=http://localhost:8010
 @host={{local}}
+@token=REPLACE_ME
 
-GET {{host}}/api/charactersheets
 ###
-GET {{host}}/api/charactersheets/5ebc644452c2d8dee51ffcf3
+GET {{host}}/health
 ###
-DELETE {{host}}/api/charactersheets/5ebba10d491d61c07e299222
+GET {{host}}/api/characters
+authorization: Bearer {{token}}
+                      
 ###
-POST {{host}}/api/charactersheets  HTTP/1.1
+GET {{host}}/api/characters/5eb9009e2a00469b59fa60e3
+###
+DELETE {{host}}/api/characters/5eb9009e2a00469b59fa60e3
+### Client ID    gOkg8ZUdwKp1MmVE0EXh97Nlg0m5zgw1
+POST {{host}}/api/characters  HTTP/1.1
 content-type: application/json
+authorization: Bearer {{token}}
 
  {
-    "name": "Erebor",
+    "name": "Gwendoline",
     "description": "i am sure of it",
     "race": "dwarf",
     "currentHitPoints": 15,
@@ -22,16 +29,18 @@ content-type: application/json
     "personalityTraits": "lalala"
   },
 
-### ------------------
+### user ------------------
 
-GET {{host}}/api/parties
+GET {{host}}/api/user
+authorization: Bearer {{token}}
+
 ###
-POST {{host}}/api/parties  HTTP/1.1
+PUT {{host}}/api/user  HTTP/1.1
 content-type: application/json
+authorization: Bearer {{token}}
 
  {
-    "name": "The allmighty Heroes",
-    "characters": [
-        "5eb9009e2a00469b59fa60e2", "5eb900b22a00469b59fa60e4", "5eb93bfa2a00469b59fa60e6"
-    ]
-}
+  "id": "myid",
+    "name": "username",
+    "nickname": "nick"
+},

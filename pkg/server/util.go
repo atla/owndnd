@@ -13,7 +13,7 @@ type Route struct {
 	Pattern     string
 	Method      string
 	Name        string
-	HandlerFunc http.HandlerFunc
+	HandlerFunc http.Handler
 }
 
 // Routes ... type to hold multiple routes
