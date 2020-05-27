@@ -181,6 +181,10 @@ func (app *app) setupRoutes() {
 		app.facade.UsersService(),
 	}
 
+	rooms := &handler.RoomsHandler{
+		app.facade.RoomsService(),
+	}
+
 	r.Static("/app", "public/app/public")
 
 	r.GET("/health", func(c *gin.Context) {
@@ -188,14 +192,17 @@ func (app *app) setupRoutes() {
 	})
 
 	apiv1 := r.Group("/api/")
-	apiv1.Use(app.authMiddleware())
+	//apiv1.Use(app.authMiddleware())
 	{
 		apiv1.GET("characters", csh.GetCharacters)
 		apiv1.POST("characters", csh.PostCharacter)
-
 		apiv1.GET("characters/:id", csh.GetCharacterByID)
 		apiv1.DELETE("characters/:id", csh.DeleteCharacterByID)
 		apiv1.PUT("characters/:id", csh.UpdateCharacterByID)
+
+		apiv1.GET("rooms", rooms.GetRooms)
+		apiv1.POST("rooms", rooms.PostRoom)
+		apiv1.PUT("rooms/:id", rooms.PutRoom)
 
 		apiv1.GET("user", usr.GetUser)
 		apiv1.PUT("user", usr.UpdateUser)

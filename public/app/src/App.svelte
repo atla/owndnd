@@ -5,6 +5,16 @@
     transition: background-color 0.3s;
     margin: 0 auto;
     padding: 0px;
+
+    /* The image used */
+    /*background-image: url("bg.jpg");*/
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
   }
   .userbutton {
     margin-left: 1em;
@@ -15,7 +25,7 @@
     text-decoration-line: none;
   }
   nav {
-    background: transparent;
+    background: #00000033;
   }
   nav {
     margin-bottom: 2em;
@@ -32,6 +42,8 @@
 
   import { user } from "./stores.js";
   import { fade } from "svelte/transition";
+
+  import Game from "./game/Game.svelte";
 
   import UserMenu from "./UserMenu.svelte";
   import Input from "./Input.svelte";
@@ -67,8 +79,8 @@
   };
 
   onMount(async () => {
-    var elems = document.querySelectorAll(".tabs");
-    let instance = M.Tabs.init(elems);
+    //var elems = document.querySelectorAll(".tabs");
+    //let instance = M.Tabs.init(elems);
   });
 </script>
 
@@ -85,9 +97,10 @@
 
   </script>
   <link
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
+
 </svelte:head>
 
 <Router>
@@ -102,7 +115,10 @@
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li class="align-left">
-          <button on:click class="btn-small userbutton blue">Play</button>
+          <Link to="play">
+            <button on:click class="btn-small userbutton blue">Play</button>
+          </Link>
+
         </li>
         {#if $isAuthenticated}
           <li>
@@ -141,6 +157,7 @@
 
     <Route path="account" component="{UserForm}" />
     <Route path="creator" component="{Creator}" />
+    <Route path="play" component="{Game}" />
 
     <Route path="/">
       {#if $isAuthenticated}

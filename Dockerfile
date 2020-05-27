@@ -8,10 +8,10 @@ ADD . /go/src/github.com/atla/owndnd
 WORKDIR /go/src/github.com/atla/owndnd
 
 RUN go mod download
-RUN go install github.com/atla/owndnd/cmd/owndnd       
+RUN go install github.com/atla/owndnd/cmd/tales       
 
 # Run the outyet command by default when the container starts.
-ENTRYPOINT /go/bin/owndnd
+ENTRYPOINT /go/bin/tales
 
 # Document that the service listens on port 8080.
 EXPOSE 8010

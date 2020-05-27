@@ -10,6 +10,7 @@
     "@rollup/plugin-commonjs": "11.0.2",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "rollup": "^1.20.0",
+    "rollup-plugin-css-only": "^2.0.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-svelte": "^5.0.3",
@@ -22,6 +23,8 @@
     "moment": "^2.25.1",
     "sirv-cli": "^0.4.4",
     "svelte-media-query": "0.0.4",
-    "svelte-routing": "^1.4.2"
+    "svelte-routing": "^1.4.2",
+    "xterm": "^4.6.0",
+    "xterm-addon-fit": "^0.4.0"
   }
 }

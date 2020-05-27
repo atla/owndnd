@@ -8,8 +8,13 @@
   import { createAuth, getAuth } from "../auth.js";
 
   import axios from "axios";
+  import {
+    getRoom,
+    getRooms,
+    updateRoom,
+  } from "../api/rooms.js";
 
-  let characters = [];
+  let rooms = [];
 
   const {
     isLoading,
@@ -27,23 +32,20 @@
     authError: $authError,
     userInfo: $userInfo ? $userInfo.name : null,
     authToken: $authToken.slice(0, 20),
-    characters,
+    rooms,
   };
 
   $: {
-    axios(`http://localhost:8010/api/characters`, {
-      method: "GET",
-      mode: "no-cors",
-      credentials: "same-origin",
-      headers: {
-        Authorization: `Bearer ${$authToken}`,
-      },
-    }).then((r) => (characters = r.data));
+    getRooms($authToken, (data) => {
+      rooms = data;
+    });
   }
 
   onMount(async () => {
     var elems = document.querySelectorAll(".tabs");
     let instance = M.Tabs.init(elems);
+
+    document.body.style.backgroundImage = "";
   });
 </script>
 
@@ -53,17 +55,19 @@
   <table>
     <thead>
       <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Created</th>
+        <th>Detail</th>
       </tr>
     </thead>
     <tbody>
-      {#each characters as character}
+      {#each rooms as room}
         <tr>
-          <td>{character.name}</td>
-          <td>{character.description}</td>
-          <td>{character.created}</td>
+          <td>{room.id}</td>
+          <td>{room.name}</td>
+          <td>{room.description}</td>
+          <td>{room.detail}</td>
         </tr>
       {/each}
     </tbody>
