@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.8.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "moment": "^2.25.1",
     "sirv-cli": "^0.4.4",
     "svelte-media-query": "0.0.4",
